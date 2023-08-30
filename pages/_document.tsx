@@ -6,11 +6,9 @@ export default class CustomDocument extends Document {
       <Html>
         <Head>
           <meta
-            name="description"
-            content="我是程序员大胜， 一个前端开发工程师。"
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
           />
-          <meta name="keywords" content="技术随笔, IDE, 编程, AI, AIGC, 大胜" />
-          <title>大胜的技术随笔</title>
         </Head>
         <body>
           <Main />
