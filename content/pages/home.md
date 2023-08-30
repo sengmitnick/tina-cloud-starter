@@ -1,15 +1,10 @@
 ---
-title: Tina Cloud Starter
+title: 大胜
 blocks:
-  - headline: Welcome to the Tina Starter
-    text: >
-      This project is set up to show you the basics of working with Tina. You're
-      looking at the landing page, which pulls content from
-      `content/pages/home.md`, components from components/blocks, and puts them
-      all together in `pages/[filename].tsx`, all based on a config
-      `tina/config.tsx`.
+  - headline: 大胜的技术随笔
+    text: "\U0001F44B Hi, 我是程序员大胜， 一个前端开发工程师。\n\n* \U0001F52D 我目前正在从事 \\[1024Code]\\(https://1024code.com/) 的开发与布道；\n* \U0001F331 我目前正在学习 \\[Next.js]\\(https://nextjs.org/) ；\n* \U0001F4EB 如何联系我: \\`echo \"c2VuZ21pdG5pY2tAMTYzLmNvbQo=\" | base64 -d\\`\n"
     actions:
-      - label: Get Started
+      - label: 文章列表
         type: button
         icon: true
         link: /posts
@@ -56,6 +51,7 @@ blocks:
     color: primary
     _template: testimonial
 ---
+
 
 
 
