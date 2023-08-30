@@ -5,12 +5,12 @@
       "color": "blue",
       "style": "float"
     },
-    "name": "Tina Starter",
+    "name": "张大胜",
     "color": "default",
     "nav": [
       {
         "href": "",
-        "label": "Home"
+        "label": "首页"
       },
       {
         "href": "about",
