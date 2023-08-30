@@ -18,8 +18,13 @@ export const Layout = ({
   return (
     <>
       <Head>
-        <title>Tina</title>
+        <title>大胜的技术随笔</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name="description"
+          content="我是程序员大胜， 一个前端开发工程师。"
+        />
+        <meta name="keywords" content="技术随笔, IDE, 编程, AI, AIGC, 大胜" />
         {data.theme.font === "nunito" && (
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />
