@@ -1,125 +1,73 @@
 ---
 title: 在Apple M2 chip上安装NixOS
 heroImg: /uploads/nixos/nixos-m2/nixos01_01.png
-excerpt: >+
-  >
+excerpt: >
   使用[1024Code](https://1024code.com/)有一段时间了，逐渐对其中使用的[NixOS](https://nixos.org/)感兴趣。于是萌生了在自己的Mac
   mini安装一个[NixOS](https://nixos.org/)玩玩。
-
-
-  ### 选择虚拟机软件
-
-
-  我现在使用的Mac mini是今年的新款，使用了Apple M2
-  chip。在《[Mac虚拟机哪种好啊，有没有免费的？](https://www.zhihu.com/question/34533926)》这里寻找一番，最后决定使用[UTM](https://mac.getutm.app/)。以下罗列了其他同类软件遗弃原因：
-
-
-  * Parallels Desktop：价格太贵
-
-  * VirtualBox：不支持Apple M2 chip
-
-  * VMware：之前用过，想看看有没有其他新的，而且也收费
-
-
-  ### 下载NixOS镜像
-
-
-  通过[Download Nix / NixOS](https://nixos.org/download)下载ISO，我这里选择的是Minimal ISO
-  image的ARM版本​我们下载ARM版本的无桌面版本
-
-
-  ### 创建虚拟机
-
-
-  ​选择虚拟化​选择Linux​选择刚刚下载好的ISO，这里不需要其他打勾然后一步步默认直接下一步到下面总结界面即可。​保存运行
-
-
-  ### 开始安装NixOS
-
-
-  我们整一个安装过程需要在root下进行，在安装程序环境下，用户密码为空，使用以下命令行即可直接进入：$ sudo -i
-
-
-  ### 安装程序中的网络
-
-
-  默认使用共享网络即可，无需其他操作​添加图片注释，不超过 140 字（可选）
-
-
-  ### 分区和格式化
-
-
-  NixOS 安装程序不会执行任何分区或格式化操作，因此您需要自己执行此操作。以下是官方默认建议的UEFI分区方案。这里分区使用 parted
-
-
-  ### UEFI（GPT）
-
-
-  在UTM中，分区硬盘不是常见 /dev/sda 而是 /dev/vda 
-
-
-  > 在使用 parted 进行分区，您可以安全地忽略parted当中有关需要更新 /etc/fstab 的信息性消息。
-
-
-  1. 创建GPT分区表。
-
-
-  \# parted /dev/vda -- mklabel gpt2. 添加根分区。这将填满磁盘，除了交换所在的末尾部分以及引导分区将使用的前面剩余的空间
-  (512MB)。# parted /dev/vda -- mkpart primary 512MB -8GB3.
-  接下来，添加交换分区。所需大小根据需要而定，这里创建的是8GB。# parted /dev/vda -- mkpart primary linux-swap
-  -8GB 100%4. 最后是引导分区。NixOS 默认使用 ESP（EFI 系统分区）作为其 /boot 分区。它使用磁盘开头最初保留的 512MB。#
-  parted /dev/vda -- mkpart ESP fat32 1MB 512MB
-
-  \# parted /dev/vda -- set 3 esp on5.
-  完成后，即可继续继续格式化了。以下是当前步骤的截图：​最后通过命令行，可以看到vda分区成功
-
-
-  ### 格式化
-
-
-  1. 初始化 Ext4 分区
-
-
-  \# mkfs.ext4 -L nixos /dev/vda12. 创建交换分区# mkswap -L swap /dev/vda23. 创建启动分区#
-  mkfs.fat -F 32 -n boot /dev/vda3
-
-
-  ### 安装过程
-
-
-  1. 挂载要安装 NixOS 的目标文件系统/mnt 
-
-
-  \# mount /dev/disk/by-label/nixos /mnt2. 将引导文件系统挂载在 上/mnt/boot # mkdir -p
-  /mnt/boot
-
-  \# mount /dev/disk/by-label/boot /mnt/boot3. 如果您的计算机内存有限，您可能需要立即激活交换设备 (swapon
-  device)。安装程序（或者更确切地说，它可能产生的构建操作）可能需要相当多的 RAM，具体取决于您的配置。# swapon /dev/sda24. 创建
-  NixOS 配置文件，可以通过nixos-generate-config生成一个初始配置文件：# nixos-generate-config --root
-  /mnt5. 进行安装：# nixos-install6. 如果一切顺利：# shutdown -h now7.
-  关机后，把虚拟机的CD/DVD清除，再启动已安装的 NixOS。​清除CD/DVD
-
-
-  ### 大功告成
-
-
-  ​添加图片注释，不超过 140 字（可选）
-
-
-  ### 参考
-
-
-  * [NixOS 23.05 manual | Nix &
-  NixOS](https://nixos.org/manual/nixos/stable/#sec-installation-manual)
-
-  * [Debian 11 + Rosetta | UTM
-  Documentation](https://docs.getutm.app/guides/debian/)
-
-  * [Mac虚拟机哪种好啊，有没有免费的？](https://www.zhihu.com/question/34533926)
-
-
 author: content/authors/smk17.md
 date: 2023-08-31T16:00:00.000Z
 ---
 
-使用[1024Code](https://1024code.com/)有一段时间了，逐渐对其中使用的[NixOS](https://nixos.org/)感兴趣。于是萌生了在自己的Mac mini安装一个[NixOS](https://nixos.org/)玩玩。
+> 使用[1024Code](https://1024code.com/)有一段时间了，逐渐对其中使用的[NixOS](https://nixos.org/)感兴趣。于是萌生了在自己的Mac mini安装一个[NixOS](https://nixos.org/)玩玩。
+
+### 选择虚拟机软件
+
+我现在使用的Mac mini是今年的新款，使用了Apple M2 chip。在《[Mac虚拟机哪种好啊，有没有免费的？](https://www.zhihu.com/question/34533926)》这里寻找一番，最后决定使用[UTM](https://mac.getutm.app/)。以下罗列了其他同类软件遗弃原因：
+
+* Parallels Desktop：价格太贵
+* VirtualBox：不支持Apple M2 chip
+* VMware：之前用过，想看看有没有其他新的，而且也收费
+
+### 下载NixOS镜像
+
+通过[Download Nix / NixOS](https://nixos.org/download)下载ISO，我这里选择的是Minimal ISO image的ARM版本​我们下载ARM版本的无桌面版本
+
+### 创建虚拟机
+
+​选择虚拟化​选择Linux​选择刚刚下载好的ISO，这里不需要其他打勾然后一步步默认直接下一步到下面总结界面即可。​保存运行
+
+### 开始安装NixOS
+
+我们整一个安装过程需要在root下进行，在安装程序环境下，用户密码为空，使用以下命令行即可直接进入：$ sudo -i
+
+### 安装程序中的网络
+
+默认使用共享网络即可，无需其他操作​添加图片注释，不超过 140 字（可选）
+
+### 分区和格式化
+
+NixOS 安装程序不会执行任何分区或格式化操作，因此您需要自己执行此操作。以下是官方默认建议的UEFI分区方案。这里分区使用 parted
+
+### UEFI（GPT）
+
+在UTM中，分区硬盘不是常见 /dev/sda 而是 /dev/vda
+
+> 在使用 parted 进行分区，您可以安全地忽略parted当中有关需要更新 /etc/fstab 的信息性消息。
+
+1. 创建GPT分区表。
+
+\# parted /dev/vda -- mklabel gpt2. 添加根分区。这将填满磁盘，除了交换所在的末尾部分以及引导分区将使用的前面剩余的空间 (512MB)。# parted /dev/vda -- mkpart primary 512MB -8GB3. 接下来，添加交换分区。所需大小根据需要而定，这里创建的是8GB。# parted /dev/vda -- mkpart primary linux-swap -8GB 100%4. 最后是引导分区。NixOS 默认使用 ESP（EFI 系统分区）作为其 /boot 分区。它使用磁盘开头最初保留的 512MB。# parted /dev/vda -- mkpart ESP fat32 1MB 512MB
+\# parted /dev/vda -- set 3 esp on5. 完成后，即可继续继续格式化了。以下是当前步骤的截图：​最后通过命令行，可以看到vda分区成功
+
+### 格式化
+
+1. 初始化 Ext4 分区
+
+\# mkfs.ext4 -L nixos /dev/vda12. 创建交换分区# mkswap -L swap /dev/vda23. 创建启动分区# mkfs.fat -F 32 -n boot /dev/vda3
+
+### 安装过程
+
+1. 挂载要安装 NixOS 的目标文件系统/mnt
+
+\# mount /dev/disk/by-label/nixos /mnt2. 将引导文件系统挂载在 上/mnt/boot # mkdir -p /mnt/boot
+\# mount /dev/disk/by-label/boot /mnt/boot3. 如果您的计算机内存有限，您可能需要立即激活交换设备 (swapon device)。安装程序（或者更确切地说，它可能产生的构建操作）可能需要相当多的 RAM，具体取决于您的配置。# swapon /dev/sda24. 创建 NixOS 配置文件，可以通过nixos-generate-config生成一个初始配置文件：# nixos-generate-config --root /mnt5. 进行安装：# nixos-install6. 如果一切顺利：# shutdown -h now7. 关机后，把虚拟机的CD/DVD清除，再启动已安装的 NixOS。​清除CD/DVD
+
+### 大功告成
+
+​添加图片注释，不超过 140 字（可选）
+
+### 参考
+
+* [NixOS 23.05 manual | Nix & NixOS](https://nixos.org/manual/nixos/stable/#sec-installation-manual)
+* [Debian 11 + Rosetta | UTM Documentation](https://docs.getutm.app/guides/debian/)
+* [Mac虚拟机哪种好啊，有没有免费的？](https://www.zhihu.com/question/34533926)
