@@ -46,25 +46,95 @@ NixOS 安装程序不会执行任何分区或格式化操作，因此您需要�
 
 1. 创建GPT分区表。
 
-\# parted /dev/vda -- mklabel gpt2. 添加根分区。这将填满磁盘，除了交换所在的末尾部分以及引导分区将使用的前面剩余的空间 (512MB)。# parted /dev/vda -- mkpart primary 512MB -8GB3. 接下来，添加交换分区。所需大小根据需要而定，这里创建的是8GB。# parted /dev/vda -- mkpart primary linux-swap -8GB 100%4. 最后是引导分区。NixOS 默认使用 ESP（EFI 系统分区）作为其 /boot 分区。它使用磁盘开头最初保留的 512MB。# parted /dev/vda -- mkpart ESP fat32 1MB 512MB
-\# parted /dev/vda -- set 3 esp on5. 完成后，即可继续继续格式化了。以下是当前步骤的截图：​最后通过命令行，可以看到vda分区成功
+```sh
+# parted /dev/vda -- mklabel gpt
+```
+
+1. 添加根分区。这将填满磁盘，除了交换所在的末尾部分以及引导分区将使用的前面剩余的空间 (512MB)。
+
+```sh
+# parted /dev/vda -- mkpart primary 512MB -8GB
+```
+
+1. 接下来，添加交换分区。所需大小根据需要而定，这里创建的是8GB。
+
+```sh
+# parted /dev/vda -- mkpart primary linux-swap -8GB 100%
+```
+
+1. 最后是引导分区。NixOS 默认使用 ESP（EFI 系统分区）作为其 /boot 分区。它使用磁盘开头最初保留的 512MB。
+
+```sh
+# parted /dev/vda -- mkpart ESP fat32 1MB 512MB
+# parted /dev/vda -- set 3 esp on
+```
+
+1. 完成后，即可继续继续格式化了。以下是当前步骤的截图：​
+
+最后通过命令行，可以看到vda分区成功
 
 ### 格式化
 
 1. 初始化 Ext4 分区
 
-\# mkfs.ext4 -L nixos /dev/vda12. 创建交换分区# mkswap -L swap /dev/vda23. 创建启动分区# mkfs.fat -F 32 -n boot /dev/vda3
+```sh
+# mkfs.ext4 -L nixos /dev/vda1
+```
+
+1. 创建交换分区
+
+```sh
+# mkswap -L swap /dev/vda2
+```
+
+1. 创建启动分区
+
+```sh
+# mkfs.fat -F 32 -n boot /dev/vda3
+```
 
 ### 安装过程
 
 1. 挂载要安装 NixOS 的目标文件系统/mnt
 
-\# mount /dev/disk/by-label/nixos /mnt2. 将引导文件系统挂载在 上/mnt/boot # mkdir -p /mnt/boot
-\# mount /dev/disk/by-label/boot /mnt/boot3. 如果您的计算机内存有限，您可能需要立即激活交换设备 (swapon device)。安装程序（或者更确切地说，它可能产生的构建操作）可能需要相当多的 RAM，具体取决于您的配置。# swapon /dev/sda24. 创建 NixOS 配置文件，可以通过nixos-generate-config生成一个初始配置文件：# nixos-generate-config --root /mnt5. 进行安装：# nixos-install6. 如果一切顺利：# shutdown -h now7. 关机后，把虚拟机的CD/DVD清除，再启动已安装的 NixOS。​清除CD/DVD
+```sh
+# mount /dev/disk/by-label/nixos /mnt
+```
+
+1. 将引导文件系统挂载在 上/mnt/boot
+
+```sh
+# mkdir -p /mnt/boot
+# mount /dev/disk/by-label/boot /mnt/boot
+```
+
+1. 如果您的计算机内存有限，您可能需要立即激活交换设备 (swapon device)。安装程序（或者更确切地说，它可能产生的构建操作）可能需要相当多的 RAM，具体取决于您的配置。
+
+```sh
+# swapon /dev/sda2
+```
+
+1. 创建 NixOS 配置文件，可以通过nixos-generate-config生成一个初始配置文件：
+
+```sh
+# nixos-generate-config --root /mnt
+```
+
+1. 进行安装：
+
+```sh
+# nixos-install
+```
+
+1. 如果一切顺利：
+
+```sh
+# shutdown -h now
+```
+
+1. 关机后，把虚拟机的CD/DVD清除，再启动已安装的 NixOS。​清除CD/DVD
 
 ### 大功告成
-
-​添加图片注释，不超过 140 字（可选）
 
 ### 参考
 
